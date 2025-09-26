@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+void Adicionar( void );
+void Remover( void );
+void Listar ( void );
+
 char lista[1000];
 
 void main () {
@@ -31,23 +35,23 @@ void main () {
     } while ( opt );
 }
 
-int Adicionar() {
+void Adicionar() {
     char nome[100];
 
     printf( "Escreva o nome para adicionar: " );
-    scanf( "%s", nome );
+    scanf( "%s", &nome );
     printf( "\n'%s' foi adicionado com sucesso!\n", nome );
     
     strcat( nome, "; " );
     strcat( lista, nome );
 }
 
-int Remover() {
+void Remover() {
     char aux[100];
     printf( "Escreva o nome para remover: " );
     scanf( "%s", aux );
 }
 
-int Listar() {
+void Listar() {
     printf( "\n%s\n", lista );
 }
