@@ -6,7 +6,7 @@ void Adicionar( void );
 void Remover( void );
 void Listar ( void );
 
-char lista[1000];
+char *lista;
 
 void main () {
     int opt;
@@ -22,7 +22,7 @@ void main () {
             case 2: //TODO: Função para remover os nomes na string
                 Remover();
                 break;
-            case 3: //TODO: Função para listar os nomes da string
+            case 3: //Função para listar os nomes da string
                 Listar();
                 break;
             case 4:
@@ -36,14 +36,17 @@ void main () {
 }
 
 void Adicionar() {
-    char nome[100];
+    char nome[80];
 
     printf( "Escreva o nome para adicionar: " );
-    scanf( "%s", &nome );
-    printf( "\n'%s' foi adicionado com sucesso!\n", nome );
+    scanf( "%50[^\n]", nome );
     
+    lista = (char *) realloc(sizeof(nome[80]) * sizeof(char));
+
     strcat( nome, "; " );
     strcat( lista, nome );
+
+    printf( "\n'%s' foi adicionado com sucesso!\n", nome );
 }
 
 void Remover() {
