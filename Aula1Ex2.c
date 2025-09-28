@@ -26,6 +26,7 @@ void main () {
                 Listar();
                 break;
             case 4:
+                free(lista);
                 exit(0);
                 break;
             default:
@@ -41,16 +42,15 @@ void Adicionar() {
     printf( "Escreva o nome para adicionar: " );
     scanf( "%s", nome );
     
-    lista = (char *) realloc(sizeof(nome) * sizeof(char));
+    lista = (char *)realloc(lista, strlen(nome) * sizeof(char*));
+    printf( "\n'%s' foi adicionado com sucesso!\n", nome );
 
     strcat( nome, "; " );
     strcat( lista, nome );
-
-    printf( "\n'%s' foi adicionado com sucesso!\n", nome );
 }
 
 void Remover() {
-    char aux[100];
+    char aux[80];
     printf( "Escreva o nome para remover: " );
     scanf( "%s", aux );
 }
