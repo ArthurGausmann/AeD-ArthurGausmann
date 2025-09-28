@@ -16,13 +16,13 @@ void main () {
         printf( "Selecionado opção: %d\n", opt );
 
         switch ( opt ) {
-            case 1: //TODO: Função para adicionar os nomes na string
+            case 1: // Função para adicionar os nomes na string
                 Adicionar();
                 break;
-            case 2: //TODO: Função para remover os nomes na string
+            case 2: // TODO: Função para remover os nomes na string
                 Remover();
                 break;
-            case 3: //Função para listar os nomes da string
+            case 3: // Função para listar os nomes da string
                 Listar();
                 break;
             case 4:
