@@ -6,7 +6,7 @@ void Adicionar( void );
 void Remover( void );
 void Listar ( void );
 
-char *lista;
+char *lista = NULL;
 
 void main () {
     int opt;
@@ -39,9 +39,9 @@ void Adicionar() {
     char nome[80];
 
     printf( "Escreva o nome para adicionar: " );
-    scanf( "%50[^\n]", nome );
+    scanf( "%s", nome );
     
-    lista = (char *) realloc(sizeof(nome[80]) * sizeof(char));
+    lista = (char *) realloc(sizeof(nome) * sizeof(char));
 
     strcat( nome, "; " );
     strcat( lista, nome );
