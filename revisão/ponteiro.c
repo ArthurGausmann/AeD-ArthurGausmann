@@ -16,5 +16,8 @@ void main() {
     int *k;
     k = m; // 'k' recebe 'm', agora 'k' também aponta para 'num'
 
-    printf("Tanto 'k': %d, quanto 'm': %d, apontam para 'num'\n", *k, *m); // imprime os conteúdos de 'k' e 'm'
+    printf("Tanto 'k': %p, quanto 'm': %p, apontam para 'num': %d\n", k, m, num); // imprime os conteúdos de 'k' e 'm'
+
+    *k = 50; // Manda o ponteiro ir até que ele aponta, e modificar
+    printf("Agora num: %d\n", num);
 }
