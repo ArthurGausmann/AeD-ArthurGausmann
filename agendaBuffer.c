@@ -23,8 +23,8 @@ Não pode usar struct em todo o programa.
 // void indica que o tipo da variável é indefinido no momento, deve ser feito um casting para o tipo correto antes de acessar
 
 #define INICIAL_SIZE ( ( sizeof( int ) * 5 ) + ( sizeof( char ) * 70 ) ) // Tamanho inicial do buffer, para armazenar os endereços auxiliares
-
-#define TAM_PESSOA ( sizeof( char ) * 30 + sizeof( int ) + sizeof( char ) * 40 ) // nome(char[10]), idade(int), email(char[10])
+#define TOTAL_SIZE // Tamanho total do buffer, vai ser atualizado de acordo com o necessário
+#define PERSON_SIZE ( sizeof( char ) * 30 + sizeof( int ) + sizeof( char ) * 40 ) // nome(char[30]), idade(int), email(char[40])
 #define MENU ( *( int * )pBuffer ) // Utilizado para receber e selecionar a opção do menu
 #define LENGHT_LIST ( *( int *)( pBuffer + sizeof( int ) ) ) // Contador para tamanho de pessoas na lista
 #define AUX_INT1 ( *( int *)( pBuffer + sizeof( int ) * 2 ))
@@ -41,20 +41,15 @@ void Listar ( void *pBuffer );
 
 void main() {
     void *pBuffer = malloc( INICIAL_SIZE );
+    TOTAL_SIZE = INICIAL_SIZE;
+    LENGHT_LIST = 0;
 
-    Menu();
+    pBuffer = Menu( pBuffer );
 }
 
 void *Menu( void *pBuffer) {
     do (
-        printf(
-            "Selecione o que deseja fazer:\n
-            1 - Adicionar pessoa\n
-            2 - Remover pessoa\n
-            3 - Buscar por nome\n
-            4 - Listar todos\n
-            5 - Sair"
-        );
+        printf( "Selecione o que deseja fazer:\n1 - Adicionar pessoa\n2 - Remover pessoa\n3 - Buscar por nome\n4 - Listar todos\n5 - Sair" );
         scanf("%d", &MENU );
 
         switch ( MENU ) {
@@ -75,38 +70,67 @@ void *Menu( void *pBuffer) {
             exit(0);
             break;
         default:
+            printf( "Opção inválida" );
             break;
         }
-    ) while ( MENU );
+    ) while ( MENU != 5 );
+
+    return pBuffer;
 }
 
 void *Adicionar( void *pBuffer ) {
+
     LENGHT_LIST++; // Soma mais 1 ao tamanho da lista
 
     printf( "Nome: " );
-    scanf( " %[^\n]", CHAR_NOME ); // Recebendo o nome no endereço auxiliar
+    scanf( "%[^\n]", CHAR_NOME ); // Recebendo o nome no endereço auxiliar
+    AUX_INT2 = strlen( CHAR_NOME ) + 1 // Recebe o tamanho do nome + \0
     printf( "Idade: " );
-    scanf( " %d", AUX_INT1); // Recebendo a idade no endereço auxiliar
+    scanf( "%d", &AUX_INT1); // Recebendo a idade no endereço auxiliar
     printf( "Email: " );
-    scanf( " %[^\n]", CHAR_EMAIL ); // Recebendo o email no endereço auxiliar
+    scanf( "%[^\n]", CHAR_EMAIL ); // Recebendo o email no endereço auxiliar
+    AUX_INT3 = strlen( CHAR_EMAIL ); // Recebe o tamanho do email + \0
 
-    realloc( pBuffer, INICIAL_SIZE + ( TAM_PESSOA * LENGHT_LIST ) ); // Alterando o tamanho da memória do pBuffer para adicionar a nova pessoa (não dinâmica)
+    void *auxBuffer = realloc( pBuffer, TOTAL_SIZE + AUX_INT2 + sizeof(int) + AUX_INT3 ); // Realoca a memória com o tamanho dos nomes e email, e da idade
+    if ( !auxBuffer ) { // Verifica se o realloc foi realizado corretamente
+        printf( "Erro ao realocar a memória do buffer\n" );
+        return pBuffer;
+    }
+    pBuffer = auxBuffer; // Após verificação, atualiza o espaço do buffer original
 
+    void *auxPerson = ( pBuffer + TOTAL_SIZE ); // Auxiliar para adicionar nova pessoa, aponta para inicio da memória alocada para adicionar
 
-    // realloc (qnt * TAM_PESSOA)
+    strcpy( auxPerson, CHAR_NOME); // Copia o nome para o auxiliar
+    auxPerson += AUX_INT2; // Aponta para depois de nome
+
+    * ( int *)auxPerson = AUX_INT1; // Insere o valor da idade
+    auxPerson += sizeof( int ) // Aponta para depois de idade
+
+    strcpy( auxPerson, CHAR_EMAIL); // Copia o email
+
+    TOTAL_SIZE += AUX_INT2 + sizeof(int) + AUX_INT3 // Adiciona o tamanho da nova pessoa ao tamanho total
+    
+    return pBuffer;
+
 }
 
-void Remover() {
-    void *auxBuffer = malloc();
-    memcpy();
-    free(pBuffer);
-    pBuffer = auxBuffer;
+void *Remover( void *pBuffer) {
+    printf("Função ainda n implementada");
+    return pBuffer;
+    // void *auxBuffer = malloc();
+    // memcpy();
+    // free(pBuffer);
+    // pBuffer = auxBuffer;
 }
 
-void Buscar() {
+void Buscar( void *pBuffer ) {
+    printf("Função ainda n implementada");
+    return pBuffer;
     // loop for com if(strcmp(nome, alvo)) para achar o nome igual
 }
 
-void Listar() {
+void Listar( void *pBuffer ) {
+    printf("Função ainda n implementada");
+    return pBuffer;
     // loop for
 }
