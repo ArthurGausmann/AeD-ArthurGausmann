@@ -41,29 +41,32 @@ void Listar ( void *pBuffer );
 
 void main() {
     void *pBuffer = malloc( INICIAL_SIZE );
-    TOTAL_SIZE = INICIAL_SIZE;
-    LENGHT_LIST = 0;
 
-    pBuffer = Menu( pBuffer );
+    MENU = 0;
+    LENGHT_LIST = 0;
+    TOTAL_SIZE = INICIAL_SIZE;
+
+    while( 1 ) {
+        pBuffer = Menu( pBuffer );
+    }
 }
 
 void *Menu( void *pBuffer) {
-    do (
-        printf( "Selecione o que deseja fazer:\n1 - Adicionar pessoa\n2 - Remover pessoa\n3 - Buscar por nome\n4 - Listar todos\n5 - Sair" );
-        scanf("%d", &MENU );
+    printf( "Selecione o que deseja fazer:\n1 - Adicionar pessoa\n2 - Remover pessoa\n3 - Buscar por nome\n4 - Listar todos\n5 - Sair" );
+    scanf("%d", &MENU );
 
-        switch ( MENU ) {
+    switch ( MENU ) {
         case 1:
-            pBuffer = Adicionar( *pBuffer );
+            pBuffer = Adicionar( pBuffer );
             break;
         case 2:
-            Remover();
+            pBuffer = Remover( pBuffer );
             break;
         case 3:
-            Buscar();
+            Buscar( pBuffer );
             break;
         case 4:
-            Listar();
+            Listar( pBuffer );
             break;
         case 5:
             free( pBuffer );
@@ -71,9 +74,8 @@ void *Menu( void *pBuffer) {
             break;
         default:
             printf( "Opção inválida" );
-            break;
-        }
-    ) while ( MENU != 5 );
+        break;
+    }
 
     return pBuffer;
 }
@@ -84,7 +86,7 @@ void *Adicionar( void *pBuffer ) {
 
     printf( "Nome: " );
     scanf( "%[^\n]", CHAR_NOME ); // Recebendo o nome no endereço auxiliar
-    AUX_INT2 = strlen( CHAR_NOME ) + 1 // Recebe o tamanho do nome + \0
+    AUX_INT2 = strlen( CHAR_NOME ) + 1; // Recebe o tamanho do nome + \0
     printf( "Idade: " );
     scanf( "%d", &AUX_INT1); // Recebendo a idade no endereço auxiliar
     printf( "Email: " );
@@ -104,11 +106,11 @@ void *Adicionar( void *pBuffer ) {
     auxPerson += AUX_INT2; // Aponta para depois de nome
 
     * ( int *)auxPerson = AUX_INT1; // Insere o valor da idade
-    auxPerson += sizeof( int ) // Aponta para depois de idade
+    auxPerson += sizeof( int ); // Aponta para depois de idade
 
     strcpy( auxPerson, CHAR_EMAIL); // Copia o email
 
-    TOTAL_SIZE += AUX_INT2 + sizeof(int) + AUX_INT3 // Adiciona o tamanho da nova pessoa ao tamanho total
+    TOTAL_SIZE += AUX_INT2 + sizeof(int) + AUX_INT3; // Adiciona o tamanho da nova pessoa ao tamanho total
     
     return pBuffer;
 
@@ -124,13 +126,64 @@ void *Remover( void *pBuffer) {
 }
 
 void Buscar( void *pBuffer ) {
-    printf("Função ainda n implementada");
-    return pBuffer;
-    // loop for com if(strcmp(nome, alvo)) para achar o nome igual
+    if (LENGHT_LIST == 0) {
+        printf( "Nenhuma pessoa cadastrada!" );
+        return;
+    }
+
+    printf( "Digite o nome para buscar: " );
+    scanf( "%s", CHAR_NOME );
+
+    void *auxPerson = ( pBuffer + INICIAL_SIZE );
+
+    for ( AUX_INT1 = 0; AUX_INT1 < LENGHT_LIST; AUX_INT1++ ) {
+
+        if( strstr( auxPerson, CHAR_NOME ) ) {
+            printf( "Pessoa encontrada %d:", AUX_INT1 );
+
+            printf( "   Nome: %s\n", ( char* )auxPerson );
+            AUX_INT2 = strlen( ( char* )auxPerson );
+            auxPerson += ( AUX_INT2 + 1);
+
+            printf( "   Idade: %d\n", *( int* )auxPerson);
+            auxPerson += sizeof( int );
+
+            printf( "   Email: %s\n", ( char* )auxPerson );
+            AUX_INT2 = strlen( ( char* )auxPerson );
+            auxPerson += ( AUX_INT2 + 1);
+        } else { // Caso não encontre, percorre o ponteiro auxiliar para ele estar apontado corretamente na próxima pessoa
+            AUX_INT2 = strlen( ( char* )auxPerson );
+            auxPerson += AUX_INT2 + 1;
+
+            auxPerson += sizeof( int );
+
+            AUX_INT2 = strlen( ( char* )auxPerson );
+            auxPerson += AUX_INT2 + 1;
+        }
+
+    }
 }
 
 void Listar( void *pBuffer ) {
-    printf("Função ainda n implementada");
-    return pBuffer;
-    // loop for
+    if (LENGHT_LIST == 0) {
+        printf( "Nenhuma pessoa cadastrada!" );
+        return;
+    }
+
+    void *auxPerson = ( pBuffer + INICIAL_SIZE );
+
+    for ( AUX_INT1 = 0; AUX_INT1 < LENGHT_LIST; AUX_INT1++ ) {
+        printf( "Pessoa %d:", AUX_INT1 );
+
+        printf( "   Nome: %s\n", ( char* )auxPerson );
+        AUX_INT2 = strlen( ( char* )auxPerson );
+        auxPerson += ( AUX_INT2 + 1);
+
+        printf( "   Idade: %d\n", *( int* )auxPerson);
+        auxPerson += sizeof( int );
+
+        printf( "   Email: %s\n", ( char* )auxPerson );
+        AUX_INT2 = strlen( ( char* )auxPerson );
+        auxPerson += ( AUX_INT2 + 1);
+    }
 }
