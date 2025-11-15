@@ -20,45 +20,79 @@ Não pode usar struct em todo o programa.
 #include <stdlib.h>
 #include <string.h>
 
-void *pBuffer = malloc(sizeBytes); // void indica que o tipo da variável é indefinido no momento, deve ser feito um casting para o tipo correto antes de acessar
+// void indica que o tipo da variável é indefinido no momento, deve ser feito um casting para o tipo correto antes de acessar
 
-#define TAM_PESSOA( 10 * sizeof(char) + sizeof(int) + 10 * sizeof(char)) // nome(char[10]), idade(int), email(char[10])
+#define INICIAL_SIZE ( ( sizeof( int ) * 5 ) + ( sizeof( char ) * 70 ) ) // Tamanho inicial do buffer, para armazenar os endereços auxiliares
 
-void Menu ( void );
-void Adicionar ( void );
-void Remover ( void );
-void Buscar ( void );
-void Listar ( void );
+#define TAM_PESSOA ( sizeof( char ) * 30 + sizeof( int ) + sizeof( char ) * 40 ) // nome(char[10]), idade(int), email(char[10])
+#define MENU ( *( int * )pBuffer ) // Utilizado para receber e selecionar a opção do menu
+#define LENGHT_LIST ( *( int *)( pBuffer + sizeof( int ) ) ) // Contador para tamanho de pessoas na lista
+#define AUX_INT1 ( *( int *)( pBuffer + sizeof( int ) * 2 ))
+#define AUX_INT2 ( *( int *)( pBuffer + sizeof( int ) * 3 ) ) 
+#define AUX_INT3 ( *( int *)( pBuffer + sizeof( int ) * 4 ) ) // Endereço int de memória para auxiliar 
+#define CHAR_NOME ( (char *)( pBuffer + sizeof( int ) * 5 ) ) 
+#define CHAR_EMAIL ( (char *)( pBuffer + sizeof( int ) * 5 + sizeof( char ) * 30 ) ) // Endereço char de memória para auxiliar
+
+void *Menu ( void *pBuffer );
+void *Adicionar ( void *pBuffer );
+void *Remover ( void *pBuffer );
+void Buscar ( void *pBuffer );
+void Listar ( void *pBuffer );
 
 void main() {
+    void *pBuffer = malloc( INICIAL_SIZE );
+
     Menu();
 }
 
-void Menu() {
-    // primeiro int do pBuffer indica a opção do menu
-    switch () {
-    case 1:
-        Adicionar();
-        break;
-    case 2:
-        Remover();
-        break;
-    case 3:
-        Buscar();
-        break;
-    case 4:
-        Listar();
-        break;
-    case 5:
-        free(pBuffer);
-        exit(0);
-        break;
-    default:
-        break;
-    }
+void *Menu( void *pBuffer) {
+    do (
+        printf(
+            "Selecione o que deseja fazer:\n
+            1 - Adicionar pessoa\n
+            2 - Remover pessoa\n
+            3 - Buscar por nome\n
+            4 - Listar todos\n
+            5 - Sair"
+        );
+        scanf("%d", &MENU );
+
+        switch ( MENU ) {
+        case 1:
+            pBuffer = Adicionar( *pBuffer );
+            break;
+        case 2:
+            Remover();
+            break;
+        case 3:
+            Buscar();
+            break;
+        case 4:
+            Listar();
+            break;
+        case 5:
+            free( pBuffer );
+            exit(0);
+            break;
+        default:
+            break;
+        }
+    ) while ( MENU );
 }
 
-void Adicionar() {
+void *Adicionar( void *pBuffer ) {
+    LENGHT_LIST++; // Soma mais 1 ao tamanho da lista
+
+    printf( "Nome: " );
+    scanf( " %[^\n]", CHAR_NOME ); // Recebendo o nome no endereço auxiliar
+    printf( "Idade: " );
+    scanf( " %d", AUX_INT1); // Recebendo a idade no endereço auxiliar
+    printf( "Email: " );
+    scanf( " %[^\n]", CHAR_EMAIL ); // Recebendo o email no endereço auxiliar
+
+    realloc( pBuffer, INICIAL_SIZE + ( TAM_PESSOA * LENGHT_LIST ) ); // Alterando o tamanho da memória do pBuffer para adicionar a nova pessoa (não dinâmica)
+
+
     // realloc (qnt * TAM_PESSOA)
 }
 
