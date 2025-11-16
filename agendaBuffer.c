@@ -23,8 +23,6 @@ Nome: Arthur Campello Gausmann
 #include <stdlib.h>
 #include <string.h>
 
-// void indica que o tipo da variável é indefinido no momento, deve ser feito um casting para o tipo correto antes de acessar
-
 #define INICIAL_SIZE ( ( sizeof( int ) * 6 ) + ( sizeof( char ) * 70 ) ) // Tamanho inicial do buffer, para armazenar os endereços auxiliares
 #define MENU ( *( int * )pBuffer ) // Utilizado para receber e selecionar a opção do menu
 #define LENGHT_LIST ( *( int *)( pBuffer + sizeof( int ) ) ) // Contador para tamanho de pessoas na lista
@@ -88,17 +86,17 @@ void *Adicionar( void *pBuffer ) {
 
     printf( "Nome: " );
     scanf( "%[^\n]", CHAR_NOME ); // Recebendo o nome no endereço auxiliar
-    getchar(); // Limpar buffer do teclado
+    getchar();
     AUX_INT2 = strlen( CHAR_NOME ) + 1; // Recebe o tamanho do nome + \0
 
     printf( "Idade: " );
     scanf( "%d", &AUX_INT1); // Recebendo a idade no endereço auxiliar
-    getchar(); // Limpar buffer do teclado
+    getchar();
 
     printf( "Email: " );
     scanf( "%[^\n]", CHAR_EMAIL ); // Recebendo o email no endereço auxiliar
-    getchar(); // Limpar buffer do teclado
-    AUX_INT3 = strlen( CHAR_EMAIL ); // Recebe o tamanho do email + \0
+    getchar();
+    AUX_INT3 = strlen( CHAR_EMAIL ) + 1; // Recebe o tamanho do email + \0
 
     void *auxBuffer = realloc( pBuffer, TOTAL_SIZE + AUX_INT2 + sizeof(int) + AUX_INT3 ); // Realoca a memória com o tamanho dos nomes e email, e da idade
     if ( !auxBuffer ) { // Verifica se o realloc foi realizado corretamente
