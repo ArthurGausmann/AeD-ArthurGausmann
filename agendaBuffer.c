@@ -26,7 +26,6 @@ Nome: Arthur Campello Gausmann
 // void indica que o tipo da variável é indefinido no momento, deve ser feito um casting para o tipo correto antes de acessar
 
 #define INICIAL_SIZE ( ( sizeof( int ) * 6 ) + ( sizeof( char ) * 70 ) ) // Tamanho inicial do buffer, para armazenar os endereços auxiliares
-#define PERSON_SIZE ( sizeof( char ) * 30 + sizeof( int ) + sizeof( char ) * 40 ) // nome(char[30]), idade(int), email(char[40])
 #define MENU ( *( int * )pBuffer ) // Utilizado para receber e selecionar a opção do menu
 #define LENGHT_LIST ( *( int *)( pBuffer + sizeof( int ) ) ) // Contador para tamanho de pessoas na lista
 #define AUX_INT1 ( *( int *)( pBuffer + sizeof( int ) * 2 ))
