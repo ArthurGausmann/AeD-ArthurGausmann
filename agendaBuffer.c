@@ -107,7 +107,7 @@ void *Adicionar( void *pBuffer ) {
 
     void *auxPerson = ( pBuffer + TOTAL_SIZE ); // Auxiliar para adicionar nova pessoa, aponta para inicio da memória alocada para adicionar
 
-    strcpy( auxPerson, CHAR_NOME); // Copia o nome para o auxiliar
+    strcpy( auxPerson, CHAR_NOME); // Copia o nome para onde o auxiliar aponta
     auxPerson += AUX_INT2 * sizeof( char ); // Aponta para depois de nome
 
     * ( int *)auxPerson = AUX_INT1; // Insere o valor da idade
